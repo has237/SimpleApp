@@ -3,13 +3,13 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'docker build -t 2a8f0d8e7b28 .'
+                sh 'docker build -t hasanie/SimpleApp .'
             }
         }
         
         stage('Deploy') {
             steps {
-                sh 'docker push 2a8f0d8e7b28'
+                sh 'docker push hasanie/SimpleApp'
             }
         }
     }

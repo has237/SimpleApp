@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment{
         registry = "kss7/SimpleApp"
-        img = "$registry" + ":$(env.BUILD_ID)"
+        img = "$registry" + ":${env.BUILD_ID}"
         }
 
     stages {
@@ -16,14 +16,14 @@ pipeline {
         stage('Build') {
             steps {
             echo 'building...'
-                dockeImg = docker.build("$(img)")
+                dockeImg = docker.build("${img}")
             }
         }
         
         stage('Deploy') {
             steps {
                 echo 'deploying...'
-                sh returnStdout: true, script : "docker run --rm -d --name $(JOB_NAME -p 8091:8080 $(img)"
+                sh returnStdout: true, script : "docker run --rm -d --name ${JOB_NAME} -p 8091:8080 ${img}"
             }
         }
     }

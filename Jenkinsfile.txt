@@ -1,15 +1,29 @@
 pipeline {
     agent any
+    environment{
+        registry = "kss7/SimpleApp"
+        img = "$registry" + ":$(env.BUILD_ID)"
+        }
+
     stages {
+        stage('Chekout') {
+            steps {
+                git branch: 'master', url: 'https://github.com/has237/SimpleApp.git' 
+                sh 'ls -la'
+                
+            }
+        }
         stage('Build') {
             steps {
-                sh 'docker build -t hasanie/SimpleApp .'
+            echo 'building...'
+                dockeImg = docker.build("$(img)")
             }
         }
         
         stage('Deploy') {
             steps {
-                sh 'docker push hasanie/SimpleApp'
+                echo 'deploying...'
+                sh returnStdout: true, script : "docker run --rm -d --name $(JOB_NAME -p 8091:8080 $(img)"
             }
         }
     }
